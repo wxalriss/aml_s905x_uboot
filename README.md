@@ -40,7 +40,7 @@ fip/
 
 Install on blank SDCard (assuming SDCard in on /dev/mmcblk0):
 ```
-# sudo mkfs.vfat /dev/mmcblk0
+# sudo mkfs.vfat /dev/mmcblk0p1
 # sudo dd if=fip/u-boot.bin.sd.bin of=/dev/mmcblk0 conv=fsync,notrunc bs=1 count=444
 # sudo dd if=fip/u-boot.bin.sd.bin of=/dev/mmcblk0 conv=fsync,notrunc bs=512 skip=1 seek=1
 # sync
