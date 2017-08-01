@@ -28,7 +28,7 @@ int misc_init_r(void)
 	ssize_t len;
 
 	/* Set RMII mode */
-	setbits_le32(GXBB_ETH_REG_0, GXBB_ETH_REG_0_INVERT_RMII_CLK|
+	setbits_le32(GXBB_ETH_REG_0, GXBB_ETH_REG_0_INVERT_RMII_CLK |
 				     GXBB_ETH_REG_0_CLK_EN);
 
 	/* Use Internal PHY */
