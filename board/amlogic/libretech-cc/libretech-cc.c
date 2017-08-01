@@ -23,27 +23,21 @@ int board_init(void)
 
 int misc_init_r(void)
 {
-#if 0
 	u8 mac_addr[EFUSE_MAC_SIZE];
 	char serial[EFUSE_SN_SIZE];
 	ssize_t len;
 
-	/* Set RGMII mode */
-	setbits_le32(GXBB_ETH_REG_0, GXBB_ETH_REG_0_PHY_INTF |
-				     GXBB_ETH_REG_0_TX_PHASE(1) |
-				     GXBB_ETH_REG_0_TX_RATIO(4) |
-				     GXBB_ETH_REG_0_PHY_CLK_EN |
+	/* Set RMII mode */
+	setbits_le32(GXBB_ETH_REG_0, GXBB_ETH_REG_0_INVERT_RMII_CLK|
 				     GXBB_ETH_REG_0_CLK_EN);
+
+	/* Use Internal PHY */
+	setbits_le32(GXBB_ETH_REG_2, 0x10110181);
+	setbits_le32(GXBB_ETH_REG_3, 0xe409087f);
 
 	/* Enable power and clock gate */
 	setbits_le32(GXBB_GCLK_MPEG_1, GXBB_GCLK_MPEG_1_ETH);
 	clrbits_le32(GXBB_MEM_PD_REG_0, GXBB_MEM_PD_REG_0_ETH_MASK);
-
-	/* Reset PHY on GPIOZ_14 */
-	clrbits_le32(GXBB_GPIO_EN(3), BIT(14));
-	clrbits_le32(GXBB_GPIO_OUT(3), BIT(14));
-	mdelay(10);
-	setbits_le32(GXBB_GPIO_OUT(3), BIT(14));
 
 	if (!eth_getenv_enetaddr("ethaddr", mac_addr)) {
 		len = meson_sm_read_efuse(EFUSE_MAC_OFFSET,
@@ -58,7 +52,6 @@ int misc_init_r(void)
 		if (len == EFUSE_SN_SIZE) 
 			setenv("serial#", serial);
 	}
-#endif
 
 	return 0;
 }
