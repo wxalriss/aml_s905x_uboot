@@ -1,5 +1,7 @@
 /*
  * (C) Copyright 2016 Beniamino Galvani <b.galvani@gmail.com>
+ * (C) Copyright 2016 BayLibre, SAS
+ * Author: Neil Armstrong <narmstrong@baylibre.com>
  *
  * SPDX-License-Identifier:	GPL-2.0+
  */
@@ -39,18 +41,18 @@ int misc_init_r(void)
 	setbits_le32(GXBB_GCLK_MPEG_1, GXBB_GCLK_MPEG_1_ETH);
 	clrbits_le32(GXBB_MEM_PD_REG_0, GXBB_MEM_PD_REG_0_ETH_MASK);
 
-	if (!eth_getenv_enetaddr("ethaddr", mac_addr)) {
+	if (!eth_env_get_enetaddr("ethaddr", mac_addr)) {
 		len = meson_sm_read_efuse(EFUSE_MAC_OFFSET,
 					  mac_addr, EFUSE_MAC_SIZE);
 		if (len == EFUSE_MAC_SIZE && is_valid_ethaddr(mac_addr))
-			eth_setenv_enetaddr("ethaddr", mac_addr);
+			eth_env_set_enetaddr("ethaddr", mac_addr);
 	}
 
-	if (!getenv("serial#")) {
+	if (!env_get("serial#")) {
 		len = meson_sm_read_efuse(EFUSE_SN_OFFSET, serial,
 			EFUSE_SN_SIZE);
 		if (len == EFUSE_SN_SIZE) 
-			setenv("serial#", serial);
+			env_set("serial#", serial);
 	}
 
 	return 0;
