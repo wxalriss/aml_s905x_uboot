@@ -1,5 +1,6 @@
 #
-# (C) Copyright 2016 Beniamino Galvani <b.galvani@gmail.com>
+# (C) Copyright 2016 BayLibre, SAS
+# Author: Neil Armstrong <narmstrong@baylibre.com>
 #
 # SPDX-License-Identifier:	GPL-2.0+
 #
