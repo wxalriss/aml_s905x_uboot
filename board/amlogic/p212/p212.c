@@ -56,3 +56,10 @@ int misc_init_r(void)
 
 	return 0;
 }
+
+int ft_board_setup(void *blob, bd_t *bd)
+{
+	ft_cpu_setup(blob, bd);
+
+	return 0;
+}
