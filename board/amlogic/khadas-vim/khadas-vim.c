@@ -47,3 +47,10 @@ int misc_init_r(void)
 
 	return 0;
 }
+
+int ft_board_setup(void *blob, bd_t *bd)
+{
+	meson_gx_init_reserved_memory(blob);
+
+	return 0;
+}
