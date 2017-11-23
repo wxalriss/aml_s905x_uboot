@@ -1,0 +1,7 @@
+DT6CUSTOMBOARD BOARD
+M:	Neil Armstrong <narmstrong@baylibre.com>
+S:	Maintained
+F:	board/variscite/dt6customboard/
+F:	board/variscite/common/
+F:	include/configs/dt6customboard.h
+F:	configs/dt6customboard_defconfig

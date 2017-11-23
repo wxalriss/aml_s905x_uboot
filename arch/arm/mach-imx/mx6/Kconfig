@@ -144,6 +144,14 @@ config TARGET_DISPLAY5
 	select DM
 	select DM_SERIAL
 
+config TARGET_DT6CUSTOMBOARD
+	bool "Variscite DART-MX6 Carrier-Board"
+	select BOARD_LATE_INIT
+	select SUPPORT_SPL
+	select DM
+	select DM_THERMAL
+	select BOARD_EARLY_INIT_F
+
 config TARGET_EMBESTMX6BOARDS
 	bool "embestmx6boards"
 	select BOARD_LATE_INIT
@@ -477,6 +485,7 @@ source "board/toradex/apalis_imx6/Kconfig"
 source "board/toradex/colibri_imx6/Kconfig"
 source "board/udoo/Kconfig"
 source "board/udoo/neo/Kconfig"
+source "board/variscite/dt6customboard/Kconfig"
 source "board/wandboard/Kconfig"
 source "board/warp/Kconfig"
 

@@ -1,0 +1,12 @@
+if TARGET_DT6CUSTOMBOARD
+
+config SYS_BOARD
+	default "dt6customboard"
+
+config SYS_VENDOR
+	default "variscite"
+
+config SYS_CONFIG_NAME
+	default "dt6customboard"
+
+endif
