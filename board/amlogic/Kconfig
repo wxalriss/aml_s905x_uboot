@@ -63,6 +63,10 @@ config GXL_P241_V1
     bool "Support amlogic gxl p241 board"
     default n
 
+config LIBRETECH_AC
+	bool "Support LibreTech AC board"
+	default n
+
 config GXL_P230_V1
 	bool "Support amlogic gxm/gxl p230 board"
 	default n
@@ -248,6 +252,10 @@ endif
 
 if GXL_P241_V1
 source "board/amlogic/gxl_p241_v1/Kconfig"
+endif
+
+if LIBRETECH_AC
+source "board/amlogic/libretech_ac/Kconfig"
 endif
 
 if GXL_P230_V1
