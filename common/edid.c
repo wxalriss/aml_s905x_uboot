@@ -197,8 +197,10 @@ int edid_get_timing(u8 *buf, int buf_size, struct display_timing *timing,
 			break;
 		}
 	}
-	if (!timing_done)
+	if (!timing_done) {
+		debug("%s: timing not completed\n", __func__);
 		return -EINVAL;
+	}
 
 	if (!EDID1_INFO_VIDEO_INPUT_DIGITAL(*edid)) {
 		debug("%s: Not a digital display\n", __func__);

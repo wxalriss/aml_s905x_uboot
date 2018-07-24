@@ -5,6 +5,8 @@
  * Copyright 2017 Jernej Skrabec <jernej.skrabec@siol.net>
  */
 
+#define DEBUG
+
 #include <common.h>
 #include <fdtdec.h>
 #include <asm/io.h>
@@ -636,6 +638,7 @@ int dw_hdmi_phy_cfg(struct dw_hdmi *hdmi, uint mpixelclock)
 {
 	int i, ret;
 
+	debug("hdmi phy config\n");
 	/* hdmi phy spec says to do the phy initialization sequence twice */
 	for (i = 0; i < 2; i++) {
 		hdmi_phy_sel_data_en_pol(hdmi, 1);
@@ -662,7 +665,7 @@ int dw_hdmi_phy_wait_for_hpd(struct dw_hdmi *hdmi)
 		if (hdmi_get_plug_in_status(hdmi))
 			return 0;
 		udelay(100);
-	} while (get_timer(start) < 300);
+	} while (get_timer(start) < 1000);
 
 	return -1;
 }

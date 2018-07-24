@@ -504,7 +504,9 @@
 
 		hdmi_tx: hdmi-tx@c883a000 {
 			compatible = "amlogic,meson-gx-dw-hdmi";
-			reg = <0x0 0xc883a000 0x0 0x1c>;
+			reg = <0x0 0xc883a000 0x0 0x1c>,
+			      <0x0 0xc883c000 0x0 0x1000>;
+			reg-names = "hdmitx", "hhi";
 			interrupts = <GIC_SPI 57 IRQ_TYPE_EDGE_RISING>;
 			#address-cells = <1>;
 			#size-cells = <0>;
