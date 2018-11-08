@@ -54,7 +54,7 @@ static const struct tmds_n_cts n_cts_table[] = {
 	}
 };
 
-static void hdmi_write(struct dw_hdmi *hdmi, u8 val, int offset)
+static void dw_hdmi_write(struct dw_hdmi *hdmi, u8 val, int offset)
 {
 	switch (hdmi->reg_io_width) {
 	case 1:
@@ -69,7 +69,7 @@ static void hdmi_write(struct dw_hdmi *hdmi, u8 val, int offset)
 	}
 }
 
-static u8 hdmi_read(struct dw_hdmi *hdmi, int offset)
+static u8 dw_hdmi_read(struct dw_hdmi *hdmi, int offset)
 {
 	switch (hdmi->reg_io_width) {
 	case 1:
@@ -83,6 +83,9 @@ static u8 hdmi_read(struct dw_hdmi *hdmi, int offset)
 
 	return 0;
 }
+
+static void (*hdmi_write)(struct dw_hdmi *hdmi, u8 val, int offset) = dw_hdmi_write;
+static u8 (*hdmi_read)(struct dw_hdmi *hdmi, int offset) = dw_hdmi_read;
 
 static void hdmi_mod(struct dw_hdmi *hdmi, unsigned reg, u8 mask, u8 data)
 {
@@ -756,6 +759,12 @@ void dw_hdmi_init(struct dw_hdmi *hdmi)
 	ih_mute = /*hdmi_read(hdmi, HDMI_IH_MUTE) |*/
 		  HDMI_IH_MUTE_MUTE_WAKEUP_INTERRUPT |
 		  HDMI_IH_MUTE_MUTE_ALL_INTERRUPT;
+
+	if (hdmi->write_reg)
+		hdmi_write = hdmi->write_reg;
+
+	if (hdmi->read_reg)
+		hdmi_read = hdmi->read_reg;
 
 	hdmi_write(hdmi, ih_mute, HDMI_IH_MUTE);
 
