@@ -319,5 +319,13 @@ struct display_timing;
  */
 int edid_get_timing(u8 *buf, int buf_size, struct display_timing *timing,
 		    int *panel_bits_per_colourp);
+/**
+ * edid_match_cea_mode() - Get corresponding CEA mode
+ *
+ * @param to_match timing mode to match with the CEA mode
+ *
+ * @return 0 if mode not found, otherwise return the mode
+ */
+int edid_match_cea_mode(const struct display_timing *to_match);
 
 #endif /* __EDID_H_ */
