@@ -13,18 +13,35 @@
 #include <dm/uclass-internal.h>
 #include "meson_registers.h"
 
-static int meson_vpu_setup_mode(struct udevice *dev)
+static int meson_vpu_setup_mode(struct udevice *dev, struct udevice *disp)
 {
 	struct video_uc_platdata *uc_plat = dev_get_uclass_platdata(dev);
 	struct video_priv *uc_priv = dev_get_uclass_priv(dev);
 	struct display_timing timing;
 	bool is_cvbs = false;
+	int ret = 0;
 
-	/* CVBS has a fixed 720x480i (NTSC) and 720x576i (PAL) */
-	is_cvbs = true;
-	timing.flags = DISPLAY_FLAGS_INTERLACED;
-	uc_priv->xsize = 720;
-	uc_priv->ysize = 576;
+	if (disp) {
+		ret = display_read_timing(disp, &timing);
+		if (ret) {
+			debug("%s: Failed to read timings\n", __func__);
+			goto cvbs;
+		}
+
+		uc_priv->xsize = timing.hactive.typ;
+		uc_priv->ysize = timing.vactive.typ;
+
+		ret = display_enable(disp, 0, &timing);
+		if (ret)
+			goto cvbs;
+	} else {
+cvbs:
+		/* CVBS has a fixed 720x480i (NTSC) and 720x576i (PAL) */
+		is_cvbs = true;
+		timing.flags = DISPLAY_FLAGS_INTERLACED;
+		uc_priv->xsize = 720;
+		uc_priv->ysize = 576;
+	}
 
 	uc_priv->bpix = VPU_MAX_LOG2_BPP;
 	meson_vpu_setup_plane(dev, timing.flags & DISPLAY_FLAGS_INTERLACED);
@@ -54,6 +71,7 @@ static int meson_vpu_probe(struct udevice *dev)
 {
 	struct meson_vpu_priv *priv = dev_get_priv(dev);
 	struct power_domain pd;
+	struct udevice *disp;
 	int ret;
 
 	/* Before relocation we don't need to do anything */
@@ -84,7 +102,10 @@ static int meson_vpu_probe(struct udevice *dev)
 
 	meson_vpu_init(dev);
 
-	return meson_vpu_setup_mode(dev);
+	/* probe the display */
+	ret = uclass_get_device(UCLASS_DISPLAY, 0, &disp);
+
+	return meson_vpu_setup_mode(dev, ret ? NULL : disp);
 }
 
 static int meson_vpu_bind(struct udevice *dev)

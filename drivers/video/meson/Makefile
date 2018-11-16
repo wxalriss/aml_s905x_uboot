@@ -4,4 +4,4 @@
 #
 # Author: Neil Armstrong <narmstrong@baylibre.com>
 
-obj-${CONFIG_VIDEO_MESON} = meson_vpu.o meson_vpu_init.o meson_canvas.o meson_plane.o meson_venc.o meson_vclk.o ../dw_hdmi.o
+obj-${CONFIG_VIDEO_MESON} = meson_vpu.o meson_vpu_init.o meson_canvas.o meson_plane.o meson_venc.o meson_vclk.o meson_dw_hdmi.o ../dw_hdmi.o
