@@ -35,7 +35,7 @@ libretech-cc-amlogic-u-boot # cd -
 
 Checkout mainline U-boot :
 ```
-# git clone https://github.com/BayLibre/u-boot.git -b u-boot/v2017.11/libretech-cc libretech-cc-u-boot
+# git clone https://github.com/u-boot/u-boot.git -b master libretech-cc-u-boot
 # wget https://releases.linaro.org/components/toolchain/binaries/7.2-2017.11/aarch64-elf/gcc-linaro-7.2.1-2017.11-x86_64_aarch64-elf.tar.xz
 # tar xvfJ gcc-linaro-7.2.1-2017.11-x86_64_aarch64-elf.tar.xz
 # export PATH=$PWD/gcc-linaro-7.2.1-2017.11-x86_64_aarch64-elf/bin:$PATH
@@ -84,17 +84,55 @@ To install on blank SDCard (assuming SDCard in on /dev/mmcblk0):
 
 ### Install on eMMC
 
-To install on an eMMC you will first need to boot the board with an eMMC attached to it. From the running Linux on the board follow these steps:
+To install on an eMMC you will first need to boot the board with an eMMC attached to it. From the running Linux on the board follow these step:
 
-Clean the first block of the eMMC where u-boot will be copied:
-```
-$ dd if=/dev/zero of=/dev/mmcblk0 bs=512 count=1
-```
-
-Then copy u-boot to the eMMC (assuming the eMMC device is mmcblk0) by running :
+Copy u-boot to the eMMC (assuming the eMMC device is mmcblk0) by running :
 ```
 $ dd if=u-boot.bin of=/dev/mmcblk0 bs=512 seek=1
 ```
+
+#### [Optionnal extra step] configure u-boot to load and save environment on SD card
+i.e. to save the u-boot environment on the SD card.
+
+- Apply this patch to mailine u-boot (previously cloned repo) `libretech-cc-u-boot`:
+```
+diff --git a/configs/libretech-cc_defconfig b/configs/libretech-cc_defconfig
+index ae7e77b015..e9522c8b51 100644
+--- a/configs/libretech-cc_defconfig
++++ b/configs/libretech-cc_defconfig
+@@ -7,6 +7,12 @@ CONFIG_DEBUG_UART_BASE=0xc81004c0
+ CONFIG_DEBUG_UART_CLOCK=24000000
+ CONFIG_IDENT_STRING=" libretech-cc"
+ CONFIG_DEBUG_UART=y
++# CONFIG_ENV_IS_NOWHERE is not set
++CONFIG_ENV_IS_IN_FAT=y
++CONFIG_ENV_FAT_INTERFACE="mmc"
++CONFIG_ENV_FAT_DEVICE_AND_PART="0:auto"
++CONFIG_ENV_FAT_FILE="uboot.env"
++CONFIG_FAT_WRITE=y
+ CONFIG_OF_BOARD_SETUP=y
+ CONFIG_MISC_INIT_R=y
+ # CONFIG_DISPLAY_CPUINFO is not set
+```
+
+This will tell u-boot to save and load the environment from the SD (device 0) and not the eMMC card (device 1).
+
+- Follow the previous steps to `Generate the final image`.
+- Re-flash u-boot on the SD following `Install on SD Card`.
+
+If not already done, create a FAT partition on the SD:
+```
+# fdisk /dev/mmcblk0
+n
+p
+1
+100
+400
+w
+# mkfs.vfat /dev/mmcblk0p1
+```
+
+You can reboot and saveenv/loadenv from SD.
 
 #### [Optionnal extra step] configure u-boot to load and save environment on eMMC
 i.e. to save the u-boot environment on the eMMC and completely get rid of the SD card.
@@ -102,17 +140,21 @@ i.e. to save the u-boot environment on the eMMC and completely get rid of the SD
 - Apply this patch to mailine u-boot (previously cloned repo) `libretech-cc-u-boot`:
 ```
 diff --git a/configs/libretech-cc_defconfig b/configs/libretech-cc_defconfig
-index 7eb4e38f5001..3414191e873c 100644
+index ae7e77b015..e9522c8b51 100644
 --- a/configs/libretech-cc_defconfig
 +++ b/configs/libretech-cc_defconfig
-@@ -8,7 +8,7 @@ CONFIG_DEBUG_UART=y
- # CONFIG_ENV_IS_NOWHERE is not set
- CONFIG_ENV_IS_IN_FAT=y
- CONFIG_ENV_FAT_INTERFACE="mmc"
--CONFIG_ENV_FAT_DEVICE_AND_PART="0:auto"
+@@ -7,6 +7,12 @@ CONFIG_DEBUG_UART_BASE=0xc81004c0
+ CONFIG_DEBUG_UART_CLOCK=24000000
+ CONFIG_IDENT_STRING=" libretech-cc"
+ CONFIG_DEBUG_UART=y
++# CONFIG_ENV_IS_NOWHERE is not set
++CONFIG_ENV_IS_IN_FAT=y
++CONFIG_ENV_FAT_INTERFACE="mmc"
 +CONFIG_ENV_FAT_DEVICE_AND_PART="1:auto"
- CONFIG_ENV_FAT_FILE="uboot.env"
- CONFIG_FAT_WRITE=y
++CONFIG_ENV_FAT_FILE="uboot.env"
++CONFIG_FAT_WRITE=y
+ CONFIG_OF_BOARD_SETUP=y
+ CONFIG_MISC_INIT_R=y
  # CONFIG_DISPLAY_CPUINFO is not set
 ```
 
