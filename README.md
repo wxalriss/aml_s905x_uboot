@@ -2,7 +2,7 @@
 
 ## Board support
 -------------
- - LibreTech CC/ : branch `libretech-cc` for Amlogic U-Boot, branch `u-boot/v2017.11/libretech-cc` for v2017.11 based U-Boot
+ - LibreTech CC/ : branch `libretech-cc` for Amlogic U-Boot, branch `u-boot/v2017.11/libretech-cc` for v2017.11 based U-Boot, please use the https://github.com/u-boot/u-boot master branch, or the latest non -rc release.
 
 ## Mainline U-boot for LibreTech CC
 -----------
