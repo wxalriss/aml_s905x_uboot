@@ -6,7 +6,7 @@
 `$ tar -C /opt/toolchains xvfJ gcc-linaro-aarch64-none-elf-4.8-2013.11_linux.tar.xz`  
 `$ tar -C /opt/toolchains xvfJ gcc-linaro-arm-none-eabi-4.8-2013.11_linux.tar.xz`  
 `$ export PATH=/opt/toolchains/gcc-linaro-aarch64-none-elf-4.8-2013.11_linux/bin:/opt/toolchains/gcc-linaro-arm-none-eabi-4.8-2013.11_linux/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin`  
-`$ git clone https://github.com/BayLibre/u-boot.git -b n-amlogic-openlinux-20170606 aml-s905x-uboot`  
+`$ git clone https://github.com/wxalriss/aml_s905x_uboot -b n-amlogic-openlinux-20170606 aml-s905x-uboot`  
 `$ cd aml-s905x-uboot`  
 `$ make gxl_p212_v1_defconfig && make`  
   
