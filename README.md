@@ -1,6 +1,8 @@
 # Note: This repository is forked from https://github.com/BayLibre/u-boot, you can make and get a binary u-boot for amlogic s905x on Ubuntu x86_64.
 ## Steps:
+#p
 $ aria2c --max-connection-per-server=4 --min-split-size=1M https://releases.linaro.org/archive/13.11/components/toolchain/binaries/gcc-linaro-aarch64-none-elf-4.8-2013.11_linux.tar.xz
+#p
 $ aria2c --max-connection-per-server=4 --min-split-size=1M https://releases.linaro.org/archive/13.11/components/toolchain/binaries/gcc-linaro-arm-none-eabi-4.8-2013.11_linux.tar.xz
 $ sudo chown $USER:$USER -R /opt && mkdir -p /opt/toolchains
 $ tar -C /opt/toolchains xvfJ gcc-linaro-aarch64-none-elf-4.8-2013.11_linux.tar.xz
