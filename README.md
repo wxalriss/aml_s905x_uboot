@@ -1,3 +1,17 @@
+# Note: This repository is forked from https://github.com/BayLibre/u-boot, you can make and get a binary u-boot for amlogic s905x on Ubuntu x86_64.
+## Steps:
+$ aria2c --max-connection-per-server=4 --min-split-size=1M https://releases.linaro.org/archive/13.11/components/toolchain/binaries/gcc-linaro-aarch64-none-elf-4.8-2013.11_linux.tar.xz
+$ aria2c --max-connection-per-server=4 --min-split-size=1M https://releases.linaro.org/archive/13.11/components/toolchain/binaries/gcc-linaro-arm-none-eabi-4.8-2013.11_linux.tar.xz
+$ sudo chown $USER:$USER -R /opt && mkdir -p /opt/toolchains
+$ tar -C /opt/toolchains xvfJ gcc-linaro-aarch64-none-elf-4.8-2013.11_linux.tar.xz
+$ tar -C /opt/toolchains xvfJ gcc-linaro-arm-none-eabi-4.8-2013.11_linux.tar.xz
+$ export PATH=/opt/toolchains/gcc-linaro-aarch64-none-elf-4.8-2013.11_linux/bin:/opt/toolchains/gcc-linaro-arm-none-eabi-4.8-2013.11_linux/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+$ git clone https://github.com/BayLibre/u-boot.git -b n-amlogic-openlinux-20170606 aml-s905x-uboot
+$ cd aml-s905x-uboot
+$ make gxl_p212_v1_defconfig && make 
+Then, follow the instructions on https://u-boot.readthedocs.io/en/latest/board/amlogic/p212.html
+
+
 # LibreTech U-boot Tree
 
 ## Board support
